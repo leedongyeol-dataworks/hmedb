@@ -1,0 +1,256 @@
+@charset "utf-8";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
+@import url("https://cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css");
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+}
+
+input::-webkit-inner-spin-button {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+.section {
+  width: 140rem;
+  margin: 0 auto;
+}
+
+select:focus,
+input:focus {
+  outline: none;
+}
+
+html {
+  position: relative;
+  font-size: 10px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  letter-spacing: 0;
+  font-family: "Pretendard";
+}
+
+*,
+::after,
+::before {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 1.6rem;
+  letter-spacing: -0.05em;
+  font-weight: 400;
+  font-family: "Pretendard";
+  line-height: 1.25;
+  color: #222;
+}
+
+dd,
+dl,
+dt,
+li,
+ol,
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  border: 0;
+  vertical-align: middle;
+  font-size: 0;
+  max-width: 100%;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: -o-crisp-edges;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+caption,
+legend {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+input,
+select,
+textarea {
+  color: #454545;
+  font-size: 1.6rem;
+}
+
+input,
+select {
+  vertical-align: middle;
+}
+
+input::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder {
+  color: #999;
+}
+
+input[type="password"],
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+  padding: 0.6rem 1.2rem;
+  min-height: 3.7rem;
+  font-size: 1.4rem;
+  line-height: 1.42857143;
+  color: #555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  -webkit-transition: border-color ease-in-out 0.15s,
+    box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+input[type="password"]:focus,
+input[type="text"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #555;
+}
+
+select[disabled],
+input[disabled],
+input[readonly] {
+  background-color: #ddd;
+  color: #999;
+  opacity: 1;
+}
+
+input[disabled] {
+  cursor: not-allowed;
+}
+
+address,
+em,
+i {
+  font-style: normal;
+}
+
+button {
+  color: inherit;
+  border: 0;
+  padding: 0;
+  background: 0 0;
+  cursor: pointer;
+}
+
+hr {
+  margin: 0;
+  border: none;
+  padding: 0;
+  display: block;
+}
+
+figcaption,
+figure,
+form {
+  padding: 0;
+  margin: 0;
+}
+
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+input[type="submit"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+article,
+aside,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section {
+  display: block;
+}
+
+button,
+input,
+optgroup,
+pre,
+select,
+textarea {
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  margin: 0;
+}
+
+iframe {
+  border: 0;
+}
+
+@media (max-width: 1280px) {
+  html {
+    font-size: 9px;
+  }
+
+  .section {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 760px) {
+  html {
+    font-size: 8px;
+  }
+}
