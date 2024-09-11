@@ -1,6 +1,9 @@
 <template>
     <div>
       <div id="container" ref="stockChartContainer"></div>
+      <div class="chg_time">
+        time : {{ timelinetime }}
+      </div>
     </div>
   </template>
   <script>
@@ -13,6 +16,12 @@
       renderStockChart() {
         const minDate = new Date(this.chartData.time[0].time).getTime()
         const maxDate = new Date(this.chartData.time[this.chartData.time.length - 1].time).getTime() // 최대값을 현재 시점으로 설정
+        Highcharts.setOptions({
+            lang: {
+                rangeSelectorZoom: 'Select time:'  // 원하는 텍스트로 변경
+            }
+        });
+        const _this = this
         const chart = Highcharts.stockChart(this.$refs.stockChartContainer, {
             chart: {
                 height: 250,
@@ -48,46 +57,41 @@
             },
             rangeSelector: {
                 selected: 1,
+                buttons: [
+                    {
+                        type: "hour",
+                        count: 1,
+                        text: "1h",
+                    },
+                    {
+                        type: "hour",
+                        count: 3,
+                        text: "3h",
+                    },
+                    {
+                        type: 'day',
+                        count: 1,
+                        text: '1d'
+                    },
+                    {
+                        type: 'week',
+                        count: 1,
+                        text: '1w'
+                    },
+                    {
+                        type: 'month',
+                        count: 1,
+                        text: '1m'
+                    },
+                    {
+                        type: 'all',
+                        text: 'All'
+                    }
+                ]
             },
             title: {
-                text: "CPU Usage Over Time",
+                text: "Tracking & Analytics",
             },
-            buttons: [
-            {
-                type: "minute",
-                count: 1,
-                text: "1m",
-            },
-            {
-                type: "hour",
-                count: 3,
-                text: "3h",
-            },
-            {
-                type: 'day',
-                count: 1,
-                text: '1d'
-            },
-            {
-                type: 'week',
-                count: 1,
-                text: '1w'
-            },
-            {
-                type: 'month',
-                count: 1,
-                text: '1m'
-            },
-            {
-                type: 'year',
-                count: 1,
-                text: '1y'
-            },
-            {
-                type: 'all',
-                text: 'All'
-            }
-            ],
             xAxis: {
                 type: "datetime",
                     minRange: 3600 * 1000, // 최소 줌 범위 설정 (예: 1시간)
@@ -111,14 +115,38 @@
                     const date = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x); // 'time' 포맷 설정
                     return `${date}`;
                 },
+                positioner: function (labelWidth, labelHeight, point) {
+                    // 툴팁을 더 위쪽으로 배치하도록 y 좌표를 조정
+                    const tooltipY = 5000; // 원하는 만큼 y 값을 조정 (예: 30px 위로 이동)
+                    return {
+                        x: point.plotX + this.chart.plotLeft - labelWidth / .95,
+                        y: tooltipY
+                    };
+                }
             },
             plotOptions: {
                 series: {
                     cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false,  // 기본적으로 레이블은 숨김
+                        format: `{point.x:%Y-%m-%d %H:%M:%S}`, // 레이블에 표시될 형식
+                        style: {
+                            color: 'black',
+                            fontSize: '12px'
+                        },
+                        align: 'center',
+                        verticalAlign: 'bottom'
+                    },
                     point: {
                         events: {
                             click: function() {
                                 const chart = this.series.chart;
+
+                                // data 시간 바꾸기
+                                const times = new Date(this.x);
+                                console.log(this.x, times);
+                                
+                                _this.timelinetime = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', times);
 
                                 // bar 클릭
                                 if (chart.selectedPoint) {
@@ -126,10 +154,27 @@
                                         color: chart.selectedPoint.originalColor
                                     });
                                 }
+                                
+                                if (chart.selectedPoint) {
+                                    chart.selectedPoint.update({
+                                        color: chart.selectedPoint.originalColor,
+                                        dataLabels: { enabled: false }  // 이전 레이블 숨기기
+                                    });
+                                }
 
                                 this.originalColor = this.color;
                                 this.update({
-                                    color: Highcharts.color(this.color).brighten(0.2).get() // 클릭된 bar 티나게 하기
+                                    color: Highcharts.color(this.color).brighten(0.2).get(), // 클릭된 bar 티나게 하기
+                                    dataLabels: { // 레이블 표시
+                                    enabled: true,
+                                    format: `{point.x:%Y-%m-%d %H:%M:%S}`, // 레이블에 표시될 형식
+                                    style: {
+                                        color: 'black',
+                                        fontSize: '12px'
+                                    },
+                                        align: 'center', // 레이블의 위치
+                                        verticalAlign: 'top', // 레이블의 수직 위치
+                                    }
                                 });
 
                                 // 재클릭 화살표 없애기
@@ -213,14 +258,14 @@
         });
   
       // 초기 줌 범위를 좁게 설정
-        const min = new Date(this.chartData.time[this.chartData.time.length -1].time).getTime();
-        const max = min - 1 * 60 * 60 * 1000; // 줌차트 막대 초기 범위
-  
+        const min = new Date(this.chartData.time[this.chartData.time.length - 1].time).getTime() - 1 * 60 * 60 * 1000; // 1시간 전
+        const max = new Date(this.chartData.time[this.chartData.time.length - 1].time).getTime();
         chart.xAxis[0].setExtremes(min, max);
       },
     },
     data() {
       return {
+        timelinetime : '',
         chartData: {
           "ctime": "2024-09-09 11:29:00",
           "time": [

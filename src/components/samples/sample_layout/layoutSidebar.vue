@@ -137,12 +137,12 @@ export default {
           ],
         },
         {
-          name: "CHART",
+          name: "TIMEBAR",
           favorite: true,
           icon: "xi-search",
         },
         {
-          name: "REPORT",
+          name: "GRID",
           favorite: true,
           icon: "xi-paper",
         },
