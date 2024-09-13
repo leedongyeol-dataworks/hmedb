@@ -148,13 +148,18 @@ export default {
     const getBoxStyle = (index) => {
       const item = items.value[index];
       const isBox4 = item.type === 'box-4';
+      
+      const totalColumns = 4; // 총 열 개수
+      const columnWidthPercent = 98 / totalColumns; // 각 열의 너비 백분율
+      const marginPercent = 1; // 요소 간 여백을 위한 백분율 (필요에 따라 조정)
+
       return {
         position: 'absolute',
-        left: `${(index % 4) * (isBox4 ? 1230 : 300) + (index % 4) * 10}px`, // 여백 추가
-        top: `${Math.floor(index / 4) * (isBox4 ? 120 : 120) + Math.floor(index / 4) * 10}px`, // 여백 추가
-        width: isBox4 ? '1230px' : '300px', // '4' 박스는 전체 너비
-        height: isBox4 ? '240px' : '120px',
-        margin: '5px', // 여백
+        left: `${(index % totalColumns) * (columnWidthPercent + marginPercent)}%`, // left를 %로 설정
+        top: `${Math.floor(index / totalColumns) * (isBox4 ? 20 : 20)}%`, // top은 필요에 따라 설정, 현재 픽셀을 %로 변환한 예제
+        width: isBox4 ? '100%' : `${columnWidthPercent - marginPercent}%`, // 'box-4'는 전체 너비 차지, 나머지는 비율로 설정
+        height: isBox4 ? '40%' : '18%', // 각 요소의 높이 설정
+        margin: '0 auto', // 여백은 가운데 정렬을 위해 사용 가능
         backgroundColor: isBox4 ? '#f99' : '#ddd',
         cursor: 'pointer',
         boxSizing: 'border-box', // 여백 포함하여 크기 계산

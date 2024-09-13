@@ -1,29 +1,24 @@
 .warp {
     display: flex;
-  
     .sidebar {
       width: 20rem;
       min-height: 100vh;
       transition: 0.3s all;
       background: #366ef6;
       color: #fff;
-  
       nav {
         height: 100%;
-  
         .bar {
           font-size: 1.5rem;
           height: fit-content;
           display: flex;
           flex-wrap: wrap;
-  
           .xi-hamburger-back {
             &::before {
               font-size: 1.8rem !important;
               cursor: pointer;
             }
           }
-  
           & > li {
             width: 100%;
             padding: 1.3rem;
@@ -32,11 +27,9 @@
             a {
               white-space: nowrap;
             }
-  
             .sub {
               padding: 1rem 0.5rem;
               display: none;
-  
               & > li {
                 padding: 0.5rem 0.25rem;
                 display: none;
@@ -60,7 +53,6 @@
               }
             }
           }
-  
           .bar_icon_wrap {
             display: flex;
             justify-content: space-between;
@@ -172,10 +164,8 @@
         }
       }
     }
-  
     .layout {
       width: calc(100% - 15rem);
-  
       .header {
         background-color: #f4f4f6;
         width: 100%;
@@ -514,11 +504,13 @@
           }
         }
       }
-  
+      .container {height: calc(100% - 0rem);
+        .box-1 {width: 25%; font-size: 12px;}
+      }
       main {
         padding: 2rem 3rem;
         width: 100%;
-        height: calc(100% - 8rem);
+        height: calc(100% - 12.7rem);
       }
       nav {
         .global_wrap {
@@ -554,7 +546,6 @@
         nav {
           position: relative;
           height: 100%;
-  
           .favorites {
             display: none;
           }
@@ -572,7 +563,6 @@
                 visibility: hidden;
               }
             }
-  
             :not(.bar_icon_wrap) {
               margin-left: -15rem;
               &::before {
@@ -605,7 +595,6 @@
       }
     }
   }
-  
   @keyframes warning {
     0% {
       background-color: red;
@@ -625,4 +614,5 @@
       transform: translateY(-600%);
     }
   }
-  
+  .highcharts-container {transition: .5s all;}
+  // 드래그 차트모음

@@ -142,22 +142,22 @@ export default {
           icon: "xi-search",
         },
         {
-          name: "GRID",
+          name: "SORTABLEJS",
           favorite: true,
           icon: "xi-paper",
         },
         {
-          name: "ALERT",
+          name: "DATEPICKER",
           favorite: true,
           icon: "xi-volume-up",
         },
         {
-          name: "CONFIG",
+          name: "CHART",
           favorite: true,
           icon: "xi-view-carousel",
         },
         {
-          name: "SETTING",
+          name: "GRID",
           favorite: true,
           icon: "xi-cog",
         },

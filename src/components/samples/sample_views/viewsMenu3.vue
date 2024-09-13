@@ -235,6 +235,10 @@
                 },
             ],
             navigator: {
+                opposite: true,  // 수정된 부분: 줌 차트를 위로 이동
+                height: 60, // 줌 차트 높이를 설정
+                top: 65, // 줌 차트를 맨 위에 위치
+                margin: 0, // 줌 차트 아래쪽 여백 제거
                 enabled: true, // Navigator (줌 차트) 활성화
                 xAxis: {
                     min: minDate,// 줌 차트의 초기 최소 날짜
