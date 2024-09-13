@@ -504,7 +504,7 @@
           }
         }
       }
-      .container {height: calc(100% - 0rem);
+      .container {height: calc(100% - 0rem); transition: .3s all;
         .box-1 {width: 25%; font-size: 12px;}
       }
       main {
