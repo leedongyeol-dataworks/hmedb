@@ -5,15 +5,17 @@
   </div>
 </template>
 <script>
-import { mapActions } from "vuex"
+let result = '<select class="form-select mt-2" id="short">';
 
-export default {
-  methods: {
-    ...mapActions(["initGlobalSetting", "updateGlobalTitle"]),
-  },
-  mounted() {
-    this.initGlobalSetting()
-    this.updateGlobalTitle("SETTING")
-  },
+function pan(item) {
+  result += `<option>${item}</option>`;
 }
+
+let pants = ["바지 : 28", "바지 : 30", "바지 : 32"];
+
+pants.forEach(pan);
+
+result += "</select>";
+
+console.log(result);
 </script>
