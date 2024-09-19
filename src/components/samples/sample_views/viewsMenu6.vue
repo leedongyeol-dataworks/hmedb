@@ -67,7 +67,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #app .container {
   position: relative;
   width: 100%; /* Container width */

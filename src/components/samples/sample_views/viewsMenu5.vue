@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>Element Plus Datepicker - Date Range Example</h1>
-
     <!-- 시작 날짜 선택기 -->
     <div class="date_wrap">
       <label for="from" class="date_label">From</label>

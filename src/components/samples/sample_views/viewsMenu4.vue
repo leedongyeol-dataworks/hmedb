@@ -1,16 +1,18 @@
 <template>
+  <button class="more_box" @click="addBoxes">more box</button>
   <div ref="sortableContainer" class="container">
     <div
       v-for="(item, index) in items"
       :key="item.id"
       :class="['box', item.type, { selected: selectedItems.includes(index), swapping: isSwapping }]"
       :style="getBoxStyle(index)"
+      @click="toggleSelection(index)"
     >
-    {{ item.name }}
-    <highcharts
-      :options="chartOptions"
-      style="width: calc(100% - 5px); height: calc(100% - 20px); padding: 10px;"
-    />
+      {{ item.name }}
+      <highcharts
+        :options="chartOptions"
+        style="width: calc(100% - 5px); height: calc(100% - 20px); padding: 10px;"
+      />
     </div>
   </div>
 </template>
@@ -20,8 +22,6 @@ import { ref, onMounted, watch, nextTick } from 'vue';
 import Sortable from 'sortablejs';
 
 export default {
-  components: {
-  },
   data() {
     return {
       chartOptions: {
@@ -65,9 +65,16 @@ export default {
 
     const selectedItems = ref([]);
     const isSwapping = ref(false);
-
     const sortableContainer = ref(null);
-
+    const toggleSelection = (index) => {
+      if (selectedItems.value.includes(index)) {
+        selectedItems.value = selectedItems.value.filter(i => i !== index);
+      } else {
+        if (selectedItems.value.length < 2) {
+          selectedItems.value.push(index);
+        }
+      }
+    };
     onMounted(() => {
       Sortable.create(sortableContainer.value, {
         animation: 150,
@@ -109,6 +116,14 @@ export default {
       });
     }, { deep: true });
 
+    const addBoxes = () => {
+      const newItems = [
+        { id: Date.now(), name: 'New Box 1', type: 'box-1' },
+        { id: Date.now() + 1, name: 'New Box 4', type: 'box-4' }
+      ];
+      items.value.push(...newItems);
+    };
+
     const swapSelectedItems = () => {
       if (selectedItems.value.length === 2) {
         const [index1, index2] = selectedItems.value;
@@ -124,7 +139,6 @@ export default {
         const box2Style = getComputedStyle(box2);
 
         // 스타일을 변경하여 박스가 위치를 변경하도록 함
-
         box1.style.left = box2Style.left;
         box1.style.top = box2Style.top;
         box2.style.left = box1Style.left;
@@ -153,12 +167,14 @@ export default {
       const columnWidthPercent = 98 / totalColumns; // 각 열의 너비 백분율
       const marginPercent = 1; // 요소 간 여백을 위한 백분율 (필요에 따라 조정)
 
+      const boxWidth = isBox4 ? '100%' : `${columnWidthPercent - marginPercent}%`;
+      const boxHeight = isBox4 ? '40%' : '18%'; // 'box-4'는 높이도 설정
       return {
         position: 'absolute',
-        left: `${(index % totalColumns) * (columnWidthPercent + marginPercent)}%`, // left를 %로 설정
-        top: `${Math.floor(index / totalColumns) * (isBox4 ? 20 : 20)}%`, // top은 필요에 따라 설정, 현재 픽셀을 %로 변환한 예제
-        width: isBox4 ? '100%' : `${columnWidthPercent - marginPercent}%`, // 'box-4'는 전체 너비 차지, 나머지는 비율로 설정
-        height: isBox4 ? '40%' : '18%', // 각 요소의 높이 설정
+        left: isBox4 ? '0%' : `${(index % totalColumns) * (columnWidthPercent + marginPercent)}%`, // left를 %로 설정
+        top: isBox4 ? `${Math.floor(index / totalColumns) * 20}%` : `${Math.floor(index / totalColumns) * 20}%`, // top은 필요에 따라 설정
+        width: boxWidth, // 박스의 너비 설정
+        height: boxHeight, // 박스의 높이 설정
         margin: '0 auto', // 여백은 가운데 정렬을 위해 사용 가능
         backgroundColor: isBox4 ? '#f99' : '#ddd',
         cursor: 'pointer',
@@ -166,7 +182,7 @@ export default {
         zIndex: isBox4 ? 1 : 2, // 박스의 z-index를 조정
         border: selectedItems.value.includes(index) ? '2px solid blue' : 'none', // 선택된 경우 스타일
       };
-    };
+    }
 
     const moveBox4ToEnd = () => {
       // DOM 요소를 직접 조작하여 .box-4를 마지막으로 이동 (차트 드래그 오작동 방지)
@@ -181,6 +197,8 @@ export default {
       items,
       selectedItems,
       swapSelectedItems,
+      toggleSelection,
+      addBoxes,
       getBoxStyle,
       isSwapping,
       sortableContainer,
@@ -189,7 +207,6 @@ export default {
 };
 </script>
 
-
 <style>
 .container {
   position: relative;
@@ -197,7 +214,7 @@ export default {
   height: 100%; /* Container height */
   border: 1px solid #ddd;
   background: #f9f9f9;
-  overflow: hidden; /* Ensure no overflow during dragging */
+  overflow-x: hidden; /* Ensure no overflow during dragging */
 }
 
 .box-1 {
@@ -212,4 +229,7 @@ export default {
   border: 2px solid blue; /* 선택된 박스 스타일 */
 }
 
+.more_box {
+  margin-bottom: 10px; /* 버튼과 컨테이너 사이의 간격 설정 */
+}
 </style>

@@ -8,6 +8,7 @@ import Menu4 from "@/components/samples/sample_views/viewsMenu4.vue"
 import Menu5 from "@/components/samples/sample_views/viewsMenu5.vue"
 import Menu6 from "@/components/samples/sample_views/viewsMenu6.vue"
 import Menu7 from "@/components/samples/sample_views/viewsMenu7.vue"
+import Menu8 from "@/components/samples/sample_views/viewsMenu8.vue"
 import Sub1 from "@/components/samples/sample_views/viewsSub1.vue"
 import Sub2 from "@/components/samples/sample_views/viewsSub2.vue"
 import samplesHome from "@/components/samples/samplesHome.vue"
@@ -35,6 +36,7 @@ const routes = [
       { path: "/DATEPICKER", name: "viewsMenu5", component: Menu5 },
       { path: "/CHART", name: "viewsMenu6", component: Menu6 },
       { path: "/GRID", name: "viewsMenu7", component: Menu7 },
+      { path: "/QueryPlan", name: "viewsMenu8", component: Menu8 },
       { path: "/SUB1", name: "viewsSub1", component: Sub1 },
       { path: "/SUB2", name: "viewsSub2", component: Sub2 },],component: samplesHome },
 ]

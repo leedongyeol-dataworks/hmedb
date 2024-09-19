@@ -161,6 +161,11 @@ export default {
           favorite: true,
           icon: "xi-cog",
         },
+        {
+          name: "QueryPlan",
+          favorite: true,
+          icon: "xi-cog",
+        },
       ],
     }
   },
