@@ -144,7 +144,6 @@
 
                                 // data 시간 바꾸기
                                 const times = new Date(this.x);
-                                console.log(this.x, times);
                                 
                                 _this.timelinetime = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', times);
 
