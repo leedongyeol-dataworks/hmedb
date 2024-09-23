@@ -56,6 +56,7 @@
                 }
             },
             rangeSelector: {
+                inputEnabled: false,
                 selected: 1,
                 buttons: [
                     {
@@ -83,10 +84,6 @@
                         count: 1,
                         text: '1m'
                     },
-                    {
-                        type: 'all',
-                        text: 'All'
-                    }
                 ]
             },
             title: {

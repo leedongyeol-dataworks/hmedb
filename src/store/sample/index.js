@@ -5,6 +5,7 @@ export default new Vuex.Store({
     globalColor: {
       red : 10, yellow : 10, blue: 10
     },
+    globalPopup: false,
     globalTitle: "DASHBOARD",
     globalGroupSid: "[BW]BDW",
     globalGroup: "BW",
@@ -95,6 +96,12 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
+    togglePopup(state) {
+      state.globalPopup = !state.globalPopup
+    },
+    setPopup(state, value) {
+      state.globalPopup = value;
+    },
     colorCount(state, color) {
       if(color in state.globalColor) {
         state.globalColor[color] += 1;
@@ -248,6 +255,12 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    togglePopup({ commit }) {
+      commit('togglePopup');
+    },
+    setPopup({ commit }, value) {
+      commit('setPopup', value);
+    },
     updateGlobalTitle({ commit }, title) {
       commit("setGlobalTitle", title)
     },
@@ -322,6 +335,7 @@ export default new Vuex.Store({
     },
   },
   getters: {
+    globalPopup: (state) => state.globalPopup,
     getGlobalTitle: (state) => state.globalTitle,
     getGlobalGroupSid: (state) => state.globalGroupSid,
     getGlobalGroup: (state) => state.globalGroup,

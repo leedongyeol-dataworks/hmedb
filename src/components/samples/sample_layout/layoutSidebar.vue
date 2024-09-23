@@ -117,6 +117,46 @@ export default {
       ],
       menuState: [
         {
+          name: "TIMEBAR",
+          favorite: true,
+          icon: "xi-search",
+        },
+        {
+          name: "DATEPICKER",
+          favorite: true,
+          icon: "xi-volume-up",
+        },
+        {
+          name: "QueryPlan",
+          favorite: true,
+          icon: "xi-cog",
+        },
+        {
+          name: "popup",
+          favorite: true,
+          icon: "xi-cog",
+        },
+        {
+          name: "--------------",
+          favorite: true,
+          icon: "xi-cog",
+        },
+        {
+          name: "TABLE",
+          favorite: true,
+          icon: "xi-cog",
+        },
+        {
+          name: "LAYOUT",
+          favorite: true,
+          icon: "xi-paper",
+        },
+        {
+          name: "CHART",
+          favorite: true,
+          icon: "xi-view-carousel",
+        },
+        {
           name: "VUEX-1",
           favorite: true,
           icon: "xi-time",
@@ -135,36 +175,6 @@ export default {
               favorite: true,
             },
           ],
-        },
-        {
-          name: "TIMEBAR",
-          favorite: true,
-          icon: "xi-search",
-        },
-        {
-          name: "SORTABLEJS",
-          favorite: true,
-          icon: "xi-paper",
-        },
-        {
-          name: "DATEPICKER",
-          favorite: true,
-          icon: "xi-volume-up",
-        },
-        {
-          name: "CHART",
-          favorite: true,
-          icon: "xi-view-carousel",
-        },
-        {
-          name: "GRID",
-          favorite: true,
-          icon: "xi-cog",
-        },
-        {
-          name: "QueryPlan",
-          favorite: true,
-          icon: "xi-cog",
         },
       ],
     }

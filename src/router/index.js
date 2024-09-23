@@ -1,14 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router"
 import Dashboard from "@/components/samples/sample_views/viewsDashboard.vue"
 import Settings from "@/components/samples/sample_views/viewsSettings.vue"
-import Menu1 from "@/components/samples/sample_views/viewsMenu1.vue"
-import Menu2 from "@/components/samples/sample_views/viewsMenu2.vue"
-import Menu3 from "@/components/samples/sample_views/viewsMenu3.vue"
-import Menu4 from "@/components/samples/sample_views/viewsMenu4.vue"
-import Menu5 from "@/components/samples/sample_views/viewsMenu5.vue"
-import Menu6 from "@/components/samples/sample_views/viewsMenu6.vue"
-import Menu7 from "@/components/samples/sample_views/viewsMenu7.vue"
-import Menu8 from "@/components/samples/sample_views/viewsMenu8.vue"
+import Menu1 from "@/components/samples/sample_views/vuex-1.vue"
+import Menu2 from "@/components/samples/sample_views/vuex-2.vue"
+import TimeBar from "@/components/samples/sample_views/high-TimeBar.vue"
+import Menu4 from "@/components/samples/sample_views/sort-layout.vue"
+import Menu5 from "@/components/samples/sample_views/el-datepicker.vue"
+import Menu6 from "@/components/samples/sample_views/dashboard-chart.vue"
+import Menu7 from "@/components/samples/sample_views/ag-table.vue"
+import Menu8 from "@/components/samples/sample_views/tree-queryplan.vue"
+import Menu9 from "@/components/samples/sample_views/popup-page.vue"
 import Sub1 from "@/components/samples/sample_views/viewsSub1.vue"
 import Sub2 from "@/components/samples/sample_views/viewsSub2.vue"
 import samplesHome from "@/components/samples/samplesHome.vue"
@@ -18,7 +19,7 @@ const routes = [
   { path: "/viewsSettings", name: "viewsSettings", component: Settings },
   { path: "/TIMELINE", name: "viewsMenu1", component: Menu1 },
   { path: "/OPERRATION", name: "viewsMenu2", component: Menu2 },
-  { path: "/SERACH", name: "viewsMenu3", component: Menu3 },
+  { path: "/SERACH", name: "viewsMenu3", component: TimeBar },
   { path: "/REPORT", name: "viewsMenu4", component: Menu4 },
   { path: "/ALERT", name: "viewsMenu5", component: Menu5 },
   { path: "/CONFIG", name: "viewsMenu6", component: Menu6 },
@@ -31,12 +32,13 @@ const routes = [
       { path: "/viewsSettings", name: "viewsSettings", component: Settings },
       { path: "/VUEX-1", name: "viewsMenu1", component: Menu1 },
       { path: "/VUEX-2", name: "viewsMenu2", component: Menu2 },
-      { path: "/TIMEBAR", name: "viewsMenu3", component: Menu3 },
-      { path: "/SORTABLEJS", name: "viewsMenu4", component: Menu4 },
+      { path: "/TIMEBAR", name: "TimeBar", component: TimeBar },
+      { path: "/LAYOUT", name: "viewsMenu4", component: Menu4 },
       { path: "/DATEPICKER", name: "viewsMenu5", component: Menu5 },
       { path: "/CHART", name: "viewsMenu6", component: Menu6 },
-      { path: "/GRID", name: "viewsMenu7", component: Menu7 },
+      { path: "/TABLE", name: "viewsMenu7", component: Menu7 },
       { path: "/QueryPlan", name: "viewsMenu8", component: Menu8 },
+      { path: "/popup", name: "viewsMenu9", component: Menu9 },
       { path: "/SUB1", name: "viewsSub1", component: Sub1 },
       { path: "/SUB2", name: "viewsSub2", component: Sub2 },],component: samplesHome },
 ]

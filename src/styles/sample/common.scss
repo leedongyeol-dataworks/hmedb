@@ -687,3 +687,12 @@
     left: 2px;
   }
 }
+
+// query plan
+.tree_table {width: 70rem;
+  .cost_value_wrap {position: relative; width: 7rem;
+    &>span {display: block; position: absolute; left: 6rem; transition: .3s all;}
+    .full_value {width: 100%; height: 1.5rem; background: #d9e5f0;}
+    .cost_value {background: #1479ce; height: 1.5rem;}
+  }
+}

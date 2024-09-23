@@ -1,20 +1,19 @@
 <template>
   <div class="choice">
     <router-link :to="'/samplesHome'">samplesHome</router-link>
+    {{ globalPopup }}
   </div>
   <router-view />
+  <popupWindow v-if="globalPopup"/>
 </template>
 <script setup>
-</script>
-<script>
-export default {
-  data() {
-    return {
-    }
-  },
-  methods: {
-  },
-}
+import { useStore  } from 'vuex';
+import popupWindow from './components/views/popup-window.vue';
+import { computed } from 'vue';
+
+const store = useStore();
+const globalPopup = computed(() => store.getters.globalPopup);
+
 </script>
 
 <style lang="scss">

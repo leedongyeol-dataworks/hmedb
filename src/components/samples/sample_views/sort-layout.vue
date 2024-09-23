@@ -67,7 +67,10 @@ export default {
       { id: 10, name: 'Item 10', type: 'box-1' },
       { id: 11, name: 'Item 11', type: 'box-1' },
       { id: 13, name: 'Item 13', type: 'box-4' },
-      { id: 14, name: 'Item 14', type: 'box-1' },
+      { id: 12, name: 'Item 12', type: 'box-1' },
+      { id: 12, name: 'Item 12', type: 'box-1' },
+      { id: 12, name: 'Item 12', type: 'box-1' },
+      { id: 12, name: 'Item 12', type: 'box-1' },
       { id: 15, name: 'Item 15', type: 'box-4' },
       { id: 16, name: 'Item 16', type: 'box-1' },
       ]);
@@ -190,7 +193,13 @@ export default {
       return {
         position: 'absolute',
         left: isBox4 ? '0%' : `${currentColumn * (columnWidthPercent + marginPercent)}%`,
-        top: isBox4 ? `${(currentRow + 1)* 20}%` : `${currentRow * 20}%`,
+        top: (() => {
+          if (isBox4 && currentColumn < totalColumns) {
+            return `${(currentRow + 1) * 20}%`;
+          } else {
+            return `${currentRow * 20}%`;
+          }
+        })(),
         width: boxWidth,
         height: boxHeight,
         margin: '0 auto',
