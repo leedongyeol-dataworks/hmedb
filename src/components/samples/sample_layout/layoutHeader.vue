@@ -5,7 +5,7 @@
         ref="title"
         :class="{ wait: sub[0].name === globalTitle && activeIndex }"
       >
-        {{ globalTitle }}
+        {{ globalTitle }} / {{ sub[0].name === globalTitle }} / {{ activeIndex }}
       </h1>
       <ul class="sub_list" v-if="sub[0].name === globalTitle">
         <li

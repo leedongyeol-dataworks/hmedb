@@ -1,21 +1,29 @@
 <template>
   <div class="choice">
     <router-link :to="'/samplesHome'">samplesHome</router-link>
-    {{ globalPopup }}
   </div>
   <router-view />
-  <popupWindow v-if="globalPopup"/>
+  <popup-window> <!-- 팝업 창 -->
+    <component :is="popupFrom" :content="popupContent"/>
+  </popup-window>
 </template>
 <script setup>
-import { useStore  } from 'vuex';
-import popupWindow from './components/views/popup-window.vue';
+import { useStore } from 'vuex';
 import { computed } from 'vue';
+import popupWindow from './components/views/popup-window.vue';
 
 const store = useStore();
-const globalPopup = computed(() => store.getters.globalPopup);
-
+const popupFrom = computed(() => store.getters.popupFrom); // 동적으로 렌더링할 컴포넌트
+const popupContent = computed(() => store.getters.popupContent); // 팝업의 내용
 </script>
+<script>
 
+export default {
+  mounted() {
+    
+  }
+}
+</script>
 <style lang="scss">
 @import "@/styles/sample/common.scss";
 @import "@/styles/reset.css";

@@ -26,7 +26,7 @@ const routes = [
   { path: "/SETTING", name: "viewsMenu7", component: Menu7 },
   { path: "/SUB1", name: "viewsSub1", component: Sub1 },
   { path: "/SUB2", name: "viewsSub2", component: Sub2 },
-  { path: "/samplesHome", name: "samplesHome", 
+  { path: "/samplesHome", name: "samplesHome",component: samplesHome,
     children: [
       { path: "/board", name: "board", component: Dashboard },
       { path: "/viewsSettings", name: "viewsSettings", component: Settings },
@@ -39,8 +39,12 @@ const routes = [
       { path: "/TABLE", name: "viewsMenu7", component: Menu7 },
       { path: "/QueryPlan", name: "viewsMenu8", component: Menu8 },
       { path: "/popup", name: "viewsMenu9", component: Menu9 },
+      { path: "/popupPage1", name: "popupPage1", props: {content: '데이터1'}, component: {popupDiv: () => import('@/components/views/popup/popup-page1.vue')} },
+      { path: "/popupPage2", name: "popupPage2", props: {content: '데이터2'}, component: {popupDiv: () => import('@/components/views/popup/popup-page2.vue')} },
       { path: "/SUB1", name: "viewsSub1", component: Sub1 },
-      { path: "/SUB2", name: "viewsSub2", component: Sub2 },],component: samplesHome },
+      { path: "/SUB2", name: "viewsSub2", component: Sub2 },
+    ] 
+  },
 ]
 
 const router = createRouter({

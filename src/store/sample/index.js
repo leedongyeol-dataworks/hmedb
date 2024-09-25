@@ -1,4 +1,6 @@
 import Vuex from "vuex"
+// import popupEx1 from '@/components/views/popup/popup-page1.vue';
+// import popupEx2 from '@/components/views/popup/popup-page2.vue';
 
 export default new Vuex.Store({
   state: {
@@ -6,6 +8,8 @@ export default new Vuex.Store({
       red : 10, yellow : 10, blue: 10
     },
     globalPopup: false,
+    popupContent: null, // 팝업에 표시될 데이터나 컴포넌트
+    popupFrom: null,     // 팝업 출처나 추가 정보
     globalTitle: "DASHBOARD",
     globalGroupSid: "[BW]BDW",
     globalGroup: "BW",
@@ -96,11 +100,17 @@ export default new Vuex.Store({
     ],
   },
   mutations: {
-    togglePopup(state) {
-      state.globalPopup = !state.globalPopup
+    togglePopup(state, change) {
+      alert(change)
+      if(change) {
+        state.globalPopup = true
+      } else {
+        state.globalPopup = !state.globalPopup;
+      }
     },
-    setPopup(state, value) {
-      state.globalPopup = value;
+    setPopupContent(state, { content, from }) {
+      state.popupContent = content;
+      state.popupFrom = from;  // 클릭된 항목에 맞는 출처나 데이터를 저장
     },
     colorCount(state, color) {
       if(color in state.globalColor) {
@@ -258,8 +268,8 @@ export default new Vuex.Store({
     togglePopup({ commit }) {
       commit('togglePopup');
     },
-    setPopup({ commit }, value) {
-      commit('setPopup', value);
+    setPopupContent({ commit }, { content, from }) {
+      commit('setPopupContent', { content, from });
     },
     updateGlobalTitle({ commit }, title) {
       commit("setGlobalTitle", title)
@@ -336,6 +346,8 @@ export default new Vuex.Store({
   },
   getters: {
     globalPopup: (state) => state.globalPopup,
+    popupContent: (state) => state.popupContent,
+    popupFrom: (state) => state.popupFrom,
     getGlobalTitle: (state) => state.globalTitle,
     getGlobalGroupSid: (state) => state.globalGroupSid,
     getGlobalGroup: (state) => state.globalGroup,
