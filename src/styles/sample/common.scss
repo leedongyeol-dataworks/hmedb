@@ -6,6 +6,8 @@
     transition: 0.3s all;
     background: #366ef6;
     color: #fff;
+    position: absolute;
+    z-index: 5;
     nav {
       height: 100%;
       .bar {
@@ -165,7 +167,8 @@
     }
   }
   .layout {
-    width: calc(100% - 15rem);
+    width: calc(100% - 4rem);
+    margin-left: 4rem;
     .header {
       background-color: #f4f4f6;
       width: 100%;
