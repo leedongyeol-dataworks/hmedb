@@ -1,53 +1,58 @@
 <template>
-    <div v-if="show" class="modal-overlay" @click="close">
-      <div class="modal-content" @click.stop>
-        <h3>Select Box Type</h3>
-        <button @click="selectBox('box-1')">Box 1 (1/4 width)</button>
-        <button @click="selectBox('box-4')">Box 4 (Full width)</button>
-      </div>
+  <div class="modal">
+    <h3>Select Chart Type</h3>
+    <div>
+      <label>
+        <input type="radio" value="line" v-model="selectedChartType" />
+        Line Chart
+      </label>
+      <label>
+        <input type="radio" value="bar" v-model="selectedChartType" />
+        Bar Chart
+      </label>
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      show: Boolean
+    <button @click="submit">Submit</button>
+    <button @click="$emit('close')">Cancel</button>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      selectedChartType: 'line', // 기본 차트 유형
+    };
+  },
+  methods: {
+    submit() {
+      const chartOptions = {
+        chart: {
+          type: this.selectedChartType,
+        },
+        title: {
+          text: `${this.selectedChartType.charAt(0).toUpperCase() + this.selectedChartType.slice(1)} Chart`,
+        },
+        series: [
+          {
+            data: [1, 2, 3, 4, 5, 6, 7],
+          },
+        ],
+      };
+      this.$emit('select', chartOptions); // 선택된 차트 옵션을 부모에게 전달
     },
-    emits: ['close', 'select'],
-    methods: {
-      close() {
-        this.$emit('close');
-      },
-      selectBox(type) {
-        this.$emit('select', type);
-        this.close();
-      }
-    }
-  }
-  </script>
-  
-  <style scoped>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    z-index: 5;
-    align-items: center;
-  }
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-  }
-  button {
-    margin: 10px;
-    padding: 10px;
-  }
-  </style>
-  
+  },
+};
+</script>
+
+<style>
+.modal {
+  background-color: white;
+  padding: 20px;
+  border: 1px solid #ddd;
+  width: 300px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+</style>

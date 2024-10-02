@@ -1,98 +1,60 @@
 <template>
-  <div ref="sortableContainer" class="container">
-    <div
-      v-for="(item, index) in items"
-      :key="index"
-      :class="['box', item.type]"
-    >
-      {{ item.name }}
-      <LineChart :options="item.chartOptions" />
+  <div class="dashboard">
+    <button @click="openModal">Add Chart</button>
+
+    <!-- 차트 박스를 표시 -->
+    <div class="chart-boxes">
+      <div v-for="(item, index) in chartItems" :key="index" class="chart-container">
+        <!-- 각 차트 패널에 차트 옵션 전달 -->
+        <chart-panel :chartOptions="item.chartOptions" />
+      </div>
     </div>
+
+    <!-- 차트를 선택할 수 있는 모달 -->
+    <select-modal v-if="isModalOpen" @close="closeModal" @select="addChart" />
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import LineChart from "@/components/chart/lineChart.vue";
+import ChartPanel from '@/components/chart/chartPanel.vue';
+import SelectModal from '@/components/views/selectModal.vue';
 
 export default {
-  components: {
-    LineChart,
-  },
-  setup() {
-    const items = ref([
-      {
-        id: 1,
-        name: "Line Chart",
-        type: "box-1",
-        chartOptions: getChartOptions("line"),
-      },
-      {
-        id: 1,
-        name: "Line Chart",
-        type: "box-1",
-        chartOptions: getChartOptions("area"),
-      },
-    ]);
-
-    function getChartOptions(type) {
-      return {
-        chart: {
-          type: type,
-        },
-        title: {
-          text: `${type.charAt(0).toUpperCase() + type.slice(1)} Chart`,
-        },
-        xAxis: {
-          categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-        },
-        yAxis: {
-          title: {
-            text: "Values",
-          },
-        },
-        series: [
-          {
-            name: "Sample Data",
-            data: [1, 3, 2, 4, 6, 8, 10],
-          },
-        ],
-      };
-    }
-
+  components: { ChartPanel, SelectModal },
+  data() {
     return {
-      items,
+      isModalOpen: false,
+      chartItems: [], // 추가된 차트 박스 목록
     };
+  },
+  methods: {
+    openModal() {
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
+    },
+    addChart(chartOptions) {
+      // 새로운 차트를 리스트에 추가
+      this.chartItems.push({ chartOptions });
+      this.closeModal();
+    },
   },
 };
 </script>
 
-<style scoped>
-#app .container {
-  position: relative;
-  width: 100%; /* Container width */
-  height: 100%; /* Container height */
-  border: 1px solid #ddd;
-  background: #f9f9f9;
-  overflow: hidden; /* Ensure no overflow during dragging */
+<style>
+.dashboard {
+  padding: 20px;
+}
+.chart-boxes {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  gap: 20px;
 }
-
-#app .box-1 {
-  background-color: #ddd;
-  width: calc(25% - 1rem);
-  font-size: 12px;
-  margin-bottom: 1rem;
-  height: 15rem;
-}
-
-.box-4 {
-  background-color: #f99;
-}
-
-.box.selected {
-  border: 2px solid blue; /* 선택된 박스 스타일 */
+.chart-container {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ddd;
 }
 </style>

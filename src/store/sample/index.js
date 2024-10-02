@@ -101,7 +101,6 @@ export default new Vuex.Store({
   },
   mutations: {
     togglePopup(state, change) {
-      alert(change)
       if(change) {
         state.globalPopup = true
       } else {
