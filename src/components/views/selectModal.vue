@@ -39,6 +39,7 @@ export default {
         ],
       };
       this.$emit('select', chartOptions); // 선택된 차트 옵션을 부모에게 전달
+      this.$emit('close')
     },
   },
 };
@@ -54,5 +55,6 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 20;
 }
 </style>

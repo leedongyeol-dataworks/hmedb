@@ -1,5 +1,5 @@
 <template>
-  <button class="more_box" @click="openModal">more box</button>
+  <button class="more_box" @click="openModal">more box</button> {{ items.length }}
   <div ref="sortableContainer" class="container">
     <div
       v-for="(item, index) in items"
@@ -22,7 +22,8 @@
 
 <script>
 import { ref, onMounted, 
-  // watch, nextTick
+  // watch, 
+  nextTick
  } from 'vue';
 import Sortable from 'sortablejs';
 import Modal from '../../views/selectModal.vue'; // 모달 컴포넌트 임포트
@@ -89,17 +90,25 @@ export default {
     };
 
     const addSelectedBox = (type) => {
+      console.log(type);
+      
       const newItem = {
         id: Date.now(),
         name: `New ${type === 'box-1' ? 'Box 1' : 'Box 4'}`,
-        type: type,
+        type: type === 'box-1' ? 'box-1' : 'box-4',
       };
 
       // 기존에 있는 .box-4는 그대로 유지하면서 6번째 줄 맨 왼쪽에 .box-1 추가
       let insertIndex = items.value.length; // 기본적으로 마지막에 추가
 
-      // items 배열에 새로운 아이템 추가
       items.value.splice(insertIndex, 0, newItem);
+      nextTick(() => {
+        console.log(items);
+        
+        items.value.forEach((item, index) => {
+          getBoxStyle(index);
+        });
+      });
     };
 
     const toggleSelection = (index) => {
@@ -151,55 +160,54 @@ export default {
     // }, { deep: true });
 
     const getBoxStyle = (index) => {
-      const totalColumns = 4; // 전체 칸 수
-      let currentColumn = 0; // 현재 열
-      let currentRow = 0; // 현재 행
+      const totalColumns = 4; // 전체 열 수
+      let currentColumn = 0;  // 현재 열의 위치
+      let currentRow = 0;     // 현재 행의 위치
 
-      // 현재 줄에 공간이 있는지 추적
-
+      // 박스 배치 추적
       for (let i = 0; i < index; i++) {
         const prevItem = items.value[i];
+
+        // box-4가 있다면 전체 열을 차지하고, 다음 줄로 넘어감
         if (prevItem.type === 'box-4') {
           if (currentColumn < totalColumns) {
-            currentRow += 1
+            currentRow += 1;
           }
-          currentColumn = 0;
-          currentRow += 2;
+          currentColumn = 0; // 열을 다시 초기화
+          currentRow += 2;   // box-4는 두 줄 차지
         } 
+        
+        // box-1은 1/4 크기를 가지므로 열을 증가
         if (prevItem.type === 'box-1') {
           currentColumn += 1;
-        
+
+          // 열이 꽉 차면 다음 줄로 넘어감
           if (currentColumn === totalColumns) {
             currentColumn = 0;
             currentRow += 1;
           }
-        } 
+        }
       }
-      
+
       const item = items.value[index];
       const isBox4 = item.type === 'box-4';
 
-      const columnWidthPercent = 98 / totalColumns; // 각 칸의 너비
+      const columnWidthPercent = 98 / totalColumns; // 칸의 너비
       const marginPercent = 1; // 여백
 
-
+      // box-4는 전체 너비를 차지
       const boxWidth = isBox4 ? '100%' : `${columnWidthPercent - marginPercent}%`;
-      const boxHeight = isBox4 ? '36%' : '18%';
+      const boxHeight = isBox4 ? '36%' : '18%'; // box-4는 더 큰 높이를 가짐
 
+      // box-4는 전체 너비를 차지하므로 열 초기화
       if (isBox4) {
-        currentColumn = 0; // box-4는 전체 너비를 차지하므로 현재 열을 0으로 설정
+        currentColumn = 0;
       }
 
       return {
         position: 'absolute',
         left: isBox4 ? '0%' : `${currentColumn * (columnWidthPercent + marginPercent)}%`,
-        top: (() => {
-          if (isBox4 && currentColumn < totalColumns) {
-            return `${(currentRow + 1) * 20}%`;
-          } else {
-            return `${currentRow * 20}%`;
-          }
-        })(),
+        top: `${currentRow * 20}%`, // 각 줄마다 20%의 높이를 차지하게 함
         width: boxWidth,
         height: boxHeight,
         margin: '0 auto',
@@ -210,6 +218,7 @@ export default {
         border: selectedItems.value.includes(index) ? '2px solid blue' : 'none',
       };
     };
+
 
     // const moveBox4ToEnd = () => {
     //   const container = sortableContainer.value;
