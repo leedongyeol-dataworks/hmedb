@@ -171,6 +171,7 @@
     transition: .3s all;
     width: calc(100% - 20rem);
     margin-left: 20rem;
+    max-height: 100vh;
     .header {
       background-color: #f4f4f6;
       width: 100%;
@@ -706,4 +707,65 @@
 // panel
 .panel {
   &.chart {height: 5rem;}
+}
+
+// sort layout
+.sort-layout-wrap {
+  height: 100%;
+  .container {
+    background: #ffdcdc;
+    height: 100%;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {width: .5rem;}
+    &::-webkit-scrollbar-thumb {
+      background-color: rgb(163, 163, 163);
+    }
+    &::-webkit-scrollbar-button {display: none;}
+    &::-webkit-scrollbar-track
+    &::-webkit-scrollbar-thumb {border-radius: .5rem;}
+    .grid-item {
+      position: relative;
+      background-color: #ddd;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: grab;
+      transition: background-color 0.3s;
+    }
+    
+    .grid-item:active {
+      cursor: grabbing;
+      background-color: #bbb;
+    }
+    
+    .drag-grid {
+      width: 100%;
+      height: 100%;
+    }
+    &>div {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* 4개의 열 */
+      grid-auto-rows: calc(20% - 10px); /* 행 높이는 자동으로 설정 */
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .block-1x1 {
+    background: #b6b6b6;
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  
+  .block-2x1 {
+    background: #b6b6b6;
+    grid-column: span 2;
+    grid-row: span 1;
+  }
+  
+  .block-4x2 {
+    background: #b6b6b6;
+    grid-column: span 4;
+    grid-row: span 2;
+  }
 }
