@@ -521,7 +521,7 @@
     main {
       padding: 2rem 3rem;
       width: 100%;
-      height: calc(100% - 12.7rem);
+      height: calc(100% - 7rem);
     }
     nav {
       .global_wrap {
@@ -712,11 +712,22 @@
 // sort layout
 .sort-layout-wrap {
   height: 100%;
+  .funcButton {position: fixed; top: 5rem;}
   .container {
+    .blockStyle {display: flex; justify-content: space-between; padding: 1rem;
+      span {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .focused {
+      border: 2px solid red;
+      background-color: #ffd4d4;
+    }
     background: #ffdcdc;
     height: 100%;
     overflow-y: scroll;
-    &::-webkit-scrollbar {width: .5rem;}
+    &::-webkit-scrollbar {width: 0;}
     &::-webkit-scrollbar-thumb {
       background-color: rgb(163, 163, 163);
     }
@@ -745,7 +756,7 @@
     &>div {
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 4개의 열 */
-      grid-auto-rows: calc(20% - 10px); /* 행 높이는 자동으로 설정 */
+      grid-auto-rows: calc(20% - 8px); /* 행 높이는 자동으로 설정 */
       gap: 10px;
       width: 100%;
       height: 100%;

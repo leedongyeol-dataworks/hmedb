@@ -1,6 +1,6 @@
 <template>
   <div class="sort-layout-wrap">
-    <div>
+    <div class="funcButton">
       <button @click="addBlock('1x1')">Add 1x1 Block</button>,
       <button @click="addBlock('2x1')">Add 2x1 Block</button>,
       <button @click="addBlock('4x2')">Add 4x2 Block</button>
@@ -14,9 +14,15 @@
     <!-- 4x6 Container -->
     <div class="container" ref="scrollContainer">
       <draggable v-model="blocks" group="blocks" @end="onDragEnd" item-key="id">
-        <template #item="{ element }">
-          <div :id="`block-${element.id}`" :class="getBlockClass(element.size)">
-            {{ element.name }}
+        <template #item="{ element, index }">
+          <div :id="`block-${element.id}`" 
+            class="blockStyle"
+            :class="[
+              getBlockClass(element.size),
+              { focused: element.id === focusBlock }
+            ]">
+            <span>{{ element.name }}</span>
+            <button @click="removeBlock(index)">Delete</button>
           </div>
         </template>
       </draggable>
@@ -25,7 +31,7 @@
 </template>
 
 <script>
-import { ref , onMounted} from 'vue';
+import { ref, onMounted, nextTick} from 'vue';
 import draggable from 'vuedraggable';
 
 export default {
@@ -36,59 +42,62 @@ export default {
     let containerElement = null;
     let leftColumnBlocks  = []; // container 안의 모든 블럭 요소들
     let currentIndex = 0; // 현재 스크롤된 블럭의 인덱스
+    let focusBlock = ref(0);
+
+    // 휠 이벤트 핸들러
+    const preventScroll = (event) => {
+      event.preventDefault(); // 휠 스크롤을 막음
+    };
 
     onMounted(() => {
       // .container 요소를 마운트 이후에 직접 참조
       containerElement = document.querySelector('.container');
       if (containerElement) {
-        console.log('Container element ready:', containerElement);
         // 첫 번째 열에 있는 블럭들만 가져옴
         leftColumnBlocks = getLeftColumnBlocks();
-        console.log('Left column blocks:', leftColumnBlocks);
         scrollToFirstBlock(); // 첫 번째 블럭으로 자동 스크롤
-      } else {
-        console.error('Container element not found!');
+        containerElement.addEventListener('wheel', preventScroll);
       }
     });
 
     // 드래그 가능한 블럭들 (크기는 1x1 또는 4x2)
     const blocks = ref([
-      { id: 1, name: 'Block 1', size: '1x1' },
-      { id: 2, name: 'Block 2', size: '1x1' },
-      { id: 3, name: 'Block 3', size: '1x1' },
-      { id: 4, name: 'Block 4', size: '1x1' },
-      { id: 6, name: 'Block 6', size: '1x1' },
-      { id: 7, name: 'Block 7', size: '1x1' },
-      { id: 8, name: 'Block 8', size: '1x1' },
-      { id: 9, name: 'Block 9', size: '1x1' },
-      { id: 10, name: 'Block 10', size: '1x1' },
-      { id: 11, name: 'Block 11', size: '1x1' },
-      { id: 12, name: 'Block 12', size: '1x1' },
-      { id: 13, name: 'Block 13', size: '1x1' },
-      { id: 14, name: 'Block 14', size: '1x1' },
-      { id: 15, name: 'Block 15', size: '1x1' },
-      { id: 16, name: 'Block 16', size: '1x1' },
-      { id: 17, name: 'Block 17', size: '1x1' },
-      { id: 18, name: 'Block 18', size: '1x1' },
-      { id: 19, name: 'Block 19', size: '1x1' },
-      { id: 20, name: 'Block 20', size: '1x1' },
-      { id: 21, name: 'Block 21', size: '1x1' },
-      { id: 22, name: 'Block 22', size: '1x1' },
-      { id: 23, name: 'Block 23', size: '1x1' },
-      { id: 24, name: 'Block 24', size: '1x1' },
-      { id: 25, name: 'Block 25', size: '1x1' },
-      { id: 26, name: 'Block 26', size: '4x2' },
-      { id: 27, name: 'Block 27', size: '4x2' },
-      { id: 28, name: 'Block 28', size: '4x2' },
-      { id: 29, name: 'Block 29', size: '4x2' },
-      { id: 30, name: 'Block 30', size: '1x1' },
-      { id: 31, name: 'Block 31', size: '1x1' },
-      { id: 32, name: 'Block 32', size: '1x1' },
-      { id: 33, name: 'Block 33', size: '1x1' },
-      { id: 34, name: 'Block 34', size: '2x1' },
-      { id: 35, name: 'Block 35', size: '2x1' },
-      { id: 36, name: 'Block 36', size: '4x2' },
-      { id: 37, name: 'Block 37', size: '4x2' },
+      { id: 1, name: 'Block-1', size: '1x1' },
+      { id: 2, name: 'Block-2', size: '1x1' },
+      { id: 3, name: 'Block-3', size: '1x1' },
+      { id: 7, name: 'Block-7', size: '1x1' },
+      { id: 8, name: 'Block-8', size: '1x1' },
+      { id: 9, name: 'Block-9', size: '1x1' },
+      { id: 4, name: 'Block-4', size: '1x1' },
+      { id: 6, name: 'Block-6', size: '1x1' },
+      { id: 10, name: 'Block-10', size: '1x1' },
+      { id: 11, name: 'Block-11', size: '1x1' },
+      { id: 12, name: 'Block-12', size: '1x1' },
+      { id: 13, name: 'Block-13', size: '1x1' },
+      { id: 14, name: 'Block-14', size: '1x1' },
+      { id: 15, name: 'Block-15', size: '1x1' },
+      { id: 16, name: 'Block-16', size: '1x1' },
+      { id: 17, name: 'Block-17', size: '1x1' },
+      { id: 18, name: 'Block-18', size: '1x1' },
+      { id: 19, name: 'Block-19', size: '1x1' },
+      { id: 20, name: 'Block-20', size: '1x1' },
+      { id: 21, name: 'Block-21', size: '1x1' },
+      { id: 22, name: 'Block-22', size: '1x1' },
+      { id: 23, name: 'Block-23', size: '1x1' },
+      { id: 24, name: 'Block-24', size: '1x1' },
+      { id: 25, name: 'Block-25', size: '1x1' },
+      { id: 26, name: 'Block-26', size: '4x2' },
+      { id: 27, name: 'Block-27', size: '4x2' },
+      { id: 28, name: 'Block-28', size: '4x2' },
+      { id: 29, name: 'Block-29', size: '4x2' },
+      { id: 30, name: 'Block-30', size: '1x1' },
+      { id: 31, name: 'Block-31', size: '1x1' },
+      { id: 32, name: 'Block-32', size: '1x1' },
+      { id: 33, name: 'Block-33', size: '1x1' },
+      { id: 34, name: 'Block-34', size: '2x1' },
+      { id: 35, name: 'Block-35', size: '2x1' },
+      { id: 36, name: 'Block-36', size: '4x2' },
+      { id: 37, name: 'Block-37', size: '4x2' },
     ]);
 
     // 첫 번째 열의 블럭들만 가져오는 함수
@@ -119,22 +128,30 @@ export default {
         }
       });
 
-      console.log(leftColumnBlocks);
-      
       return leftColumnBlocks;
     };
 
 
     // 블럭 추가 함수
     const addBlock = (size) => {
-      const newId = blocks.value.length + 1;
+      const maxId = blocks.value.reduce((max, block) => Math.max(max, block.id), 0);
+      const newId = maxId + 1;
       blocks.value.push({
         id: newId,
-        name: `Block ${newId}`,
+        name: `Block-${newId}`,
         size
       });
-      // 새로운 블럭이 추가되었을 때 첫 번째 열의 블럭 목록을 업데이트
-      leftColumnBlocks = getLeftColumnBlocks();
+      nextTick(() => {
+        const totalColumns = 4; // 한 줄에 4개 열
+        const newRowIndex = Math.floor((blocks.value.length - 1) / totalColumns); // 새로운 블럭이 위치한 줄의 인덱스
+        const firstBlockIndex = newRowIndex * totalColumns; // 해당 줄의 첫 블럭 인덱스
+        const firstBlock = document.getElementById(`Block-${blocks.value[firstBlockIndex].id}`);
+
+        if (firstBlock) {
+          firstBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        leftColumnBlocks = getLeftColumnBlocks(); // 추가 후 leftColumnBlocks 정리
+      });
     };
     // 첫 번째 블럭으로 스크롤하는 함수
     const scrollToFirstBlock = () => {
@@ -144,12 +161,19 @@ export default {
       }
     };
 
+    const removeBlock = (index) => {
+      blocks.value.splice(index, 1); // 블럭을 배열에서 제거
+      leftColumnBlocks = getLeftColumnBlocks(); // 블럭 삭제 후 업데이트
+    };
     // 다음 블럭으로 스크롤하는 함수
     const scrollToNextBlock = () => {
       currentIndex++;
       if (currentIndex >= leftColumnBlocks.length) {
         currentIndex = 0; // 마지막 블럭 이후에는 다시 첫 블럭으로 돌아감
       }
+      const blockId = leftColumnBlocks[currentIndex].id
+      focusBlock.value = +blockId.replace('block-', '');
+      
       leftColumnBlocks[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     const scrollToPreviousBlock = () => {
@@ -157,6 +181,9 @@ export default {
       if (currentIndex < 0) {
         currentIndex = leftColumnBlocks.length - 1; // 첫 블럭 이전에는 마지막 블럭으로 이동
       }
+      const blockId = leftColumnBlocks[currentIndex].id
+      focusBlock.value = +blockId.replace('block-', '');
+
       leftColumnBlocks[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     // 블럭 스타일을 크기에 따라 설정
@@ -174,20 +201,27 @@ export default {
 
     // 드래그가 끝났을 때 호출
     // 드래그가 끝났을 때 호출되는 함수
-    const onDragEnd = (evt) => {
-      console.log('Drag ended', evt);
-      // 드래그 후 첫 번째 열의 블럭들을 다시 정립
-      leftColumnBlocks = getLeftColumnBlocks();
+    const onDragEnd = () => {
+
+      // 배열에서 해당 블럭을 새로운 위치로 이동
+  // leftColumnBlocks를 업데이트 (blocks 배열 기준으로 다시 설정)
+      nextTick(() => {
+        leftColumnBlocks = getLeftColumnBlocks(); // 블럭 순서를 다시 가져옴
+      });
     };
 
     return {
       blocks,
+      leftColumnBlocks,
+      focusBlock,
       onDragEnd,
       getBlockClass,
       addBlock,
       scrollToFirstBlock,
       scrollToNextBlock,
-      scrollToPreviousBlock
+      scrollToPreviousBlock,
+      preventScroll,
+      removeBlock
     };
   }
 };
