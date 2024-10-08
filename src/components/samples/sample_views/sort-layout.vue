@@ -1,6 +1,12 @@
 <template>
   <div class="sort-layout-wrap">
     <div class="funcButton">
+      <label for="chartTypeSelect">차트 타입 선택:</label>
+      <select id="chartTypeSelect" v-model="selectedChartType">
+        <option value="line">Line Chart</option>
+        <option value="bar">Bar Chart</option>
+      </select>
+      {{ selectedChartType }} ;
       <button @click="addBlock('1x1')">Add 1x1 Block</button>,
       <button @click="addBlock('2x1')">Add 2x1 Block</button>,
       <button @click="addBlock('4x2')">Add 4x2 Block</button>
@@ -21,8 +27,11 @@
               getBlockClass(element.size),
               { focused: element.id === focusBlock }
             ]">
-            <span>{{ element.name }}</span>
-            <button @click="removeBlock(index)">Delete</button>
+            <div class="block_info">
+              <span>{{ element.name }}</span>
+              <button @click="removeBlock(index)">Delete</button>
+            </div>
+            <chartPanel :chartOptions="getChartOptions(element.chartType)" />
           </div>
         </template>
       </draggable>
@@ -33,12 +42,47 @@
 <script>
 import { ref, onMounted, nextTick} from 'vue';
 import draggable from 'vuedraggable';
+import chartPanel from '@/components/chart/chartPanel.vue';
 
 export default {
   components: {
-    draggable
+    draggable,
+    chartPanel
   },
   setup() {
+    // 선택한 차트 타입 (기본값 'line')
+    const selectedChartType = ref('line');
+    // 공통 chartOptions (데이터와 구조를 공유)
+    const commonChartOptions = {
+      title: {
+        text: '공통 차트 제목'
+      },
+      xAxis: {
+        categories: ['1월', '2월', '3월', '4월', '5월']
+      },
+      yAxis: {
+        title: {
+          text: '값'
+        }
+      },
+      series: [
+        {
+          name: '시리즈 1',
+          data: [1, 3, 2, 4, 3]
+        }
+      ]
+    };
+
+    // 차트 타입에 따라 chartOptions를 반환하는 함수
+    const getChartOptions = (chartType) => {
+      return {
+        ...commonChartOptions, // 공통 옵션 복사
+        chart: {
+          type: chartType // 차트 타입 적용 ('line', 'bar' 등)
+        }
+      };
+    };
+
     let containerElement = null;
     let leftColumnBlocks  = []; // container 안의 모든 블럭 요소들
     let currentIndex = 0; // 현재 스크롤된 블럭의 인덱스
@@ -62,43 +106,46 @@ export default {
 
     // 드래그 가능한 블럭들 (크기는 1x1 또는 4x2)
     const blocks = ref([
-      { id: 1, name: 'Block-1', size: '1x1' },
-      { id: 2, name: 'Block-2', size: '1x1' },
-      { id: 3, name: 'Block-3', size: '1x1' },
-      { id: 7, name: 'Block-7', size: '1x1' },
-      { id: 8, name: 'Block-8', size: '1x1' },
-      { id: 9, name: 'Block-9', size: '1x1' },
-      { id: 4, name: 'Block-4', size: '1x1' },
-      { id: 6, name: 'Block-6', size: '1x1' },
-      { id: 10, name: 'Block-10', size: '1x1' },
-      { id: 11, name: 'Block-11', size: '1x1' },
-      { id: 12, name: 'Block-12', size: '1x1' },
-      { id: 13, name: 'Block-13', size: '1x1' },
-      { id: 14, name: 'Block-14', size: '1x1' },
-      { id: 15, name: 'Block-15', size: '1x1' },
-      { id: 16, name: 'Block-16', size: '1x1' },
-      { id: 17, name: 'Block-17', size: '1x1' },
-      { id: 18, name: 'Block-18', size: '1x1' },
-      { id: 19, name: 'Block-19', size: '1x1' },
-      { id: 20, name: 'Block-20', size: '1x1' },
-      { id: 21, name: 'Block-21', size: '1x1' },
-      { id: 22, name: 'Block-22', size: '1x1' },
-      { id: 23, name: 'Block-23', size: '1x1' },
-      { id: 24, name: 'Block-24', size: '1x1' },
-      { id: 25, name: 'Block-25', size: '1x1' },
-      { id: 26, name: 'Block-26', size: '4x2' },
-      { id: 27, name: 'Block-27', size: '4x2' },
-      { id: 28, name: 'Block-28', size: '4x2' },
-      { id: 29, name: 'Block-29', size: '4x2' },
-      { id: 30, name: 'Block-30', size: '1x1' },
-      { id: 31, name: 'Block-31', size: '1x1' },
-      { id: 32, name: 'Block-32', size: '1x1' },
-      { id: 33, name: 'Block-33', size: '1x1' },
-      { id: 34, name: 'Block-34', size: '2x1' },
-      { id: 35, name: 'Block-35', size: '2x1' },
-      { id: 36, name: 'Block-36', size: '4x2' },
-      { id: 37, name: 'Block-37', size: '4x2' },
+      { id: 1, name: 'Block-1', size: '1x1', resource : '', chartType : 'line'},
+      { id: 2, name: 'Block-2', size: '1x1', resource : '', chartType : 'line'},
+      { id: 3, name: 'Block-3', size: '1x1', resource : '', chartType : 'line'},
+      { id: 7, name: 'Block-7', size: '1x1', resource : '', chartType : 'line'},
+      { id: 8, name: 'Block-8', size: '1x1', resource : '', chartType : 'line'},
+      { id: 9, name: 'Block-9', size: '1x1', resource : '', chartType : 'line'},
+      { id: 4, name: 'Block-4', size: '1x1', resource : '', chartType : 'line'},
+      { id: 6, name: 'Block-6', size: '1x1', resource : '', chartType : 'line'},
+      { id: 10, name: 'Block-10', size: '1x1', resource : '', chartType : 'line'},
+      { id: 11, name: 'Block-11', size: '1x1', resource : '', chartType : 'line'},
+      { id: 12, name: 'Block-12', size: '1x1', resource : '', chartType : 'line'},
+      { id: 13, name: 'Block-13', size: '1x1', resource : '', chartType : 'line'},
+      { id: 14, name: 'Block-14', size: '1x1', resource : '', chartType : 'line'},
+      { id: 15, name: 'Block-15', size: '1x1', resource : '', chartType : 'line'},
+      { id: 16, name: 'Block-16', size: '1x1', resource : '', chartType : 'line'},
+      { id: 17, name: 'Block-17', size: '1x1', resource : '', chartType : 'line'},
+      { id: 18, name: 'Block-18', size: '1x1', resource : '', chartType : 'line'},
+      { id: 19, name: 'Block-19', size: '1x1', resource : '', chartType : 'line'},
+      { id: 20, name: 'Block-20', size: '1x1', resource : '', chartType : 'line'},
+      { id: 21, name: 'Block-21', size: '1x1', resource : '', chartType : 'line'},
+      { id: 22, name: 'Block-22', size: '1x1', resource : '', chartType : 'line'},
+      { id: 23, name: 'Block-23', size: '1x1', resource : '', chartType : 'line'},
+      { id: 24, name: 'Block-24', size: '1x1', resource : '', chartType : 'line'},
+      { id: 25, name: 'Block-25', size: '1x1', resource : '', chartType : 'line'},
+      { id: 26, name: 'Block-26', size: '4x2', resource : '', chartType : 'line'},
+      { id: 27, name: 'Block-27', size: '4x2', resource : '', chartType : 'line'},
+      { id: 28, name: 'Block-28', size: '4x2', resource : '', chartType : 'line'},
+      { id: 29, name: 'Block-29', size: '4x2', resource : '', chartType : 'line'},
+      { id: 30, name: 'Block-30', size: '1x1', resource : '', chartType : 'line'},
+      { id: 31, name: 'Block-31', size: '1x1', resource : '', chartType : 'line'},
+      { id: 32, name: 'Block-32', size: '1x1', resource : '', chartType : 'line'},
+      { id: 33, name: 'Block-33', size: '1x1', resource : '', chartType : 'line'},
+      { id: 34, name: 'Block-34', size: '2x1', resource : '', chartType : 'line'},
+      { id: 35, name: 'Block-35', size: '2x1', resource : '', chartType : 'line'},
+      { id: 36, name: 'Block-36', size: '4x2', resource : '', chartType : 'line'},
+      { id: 37, name: 'Block-37', size: '4x2', resource : '', chartType : 'line'},
     ]);
+
+    // 배열중 가장 마지막 id 찾음
+    let blockIdCounter = ref(Math.max(...blocks.value.map(block => block.id)) + 1);
 
     // 첫 번째 열의 블럭들만 가져오는 함수
     const getLeftColumnBlocks = () => {
@@ -134,22 +181,14 @@ export default {
 
     // 블럭 추가 함수
     const addBlock = (size) => {
-      const maxId = blocks.value.reduce((max, block) => Math.max(max, block.id), 0);
-      const newId = maxId + 1;
       blocks.value.push({
-        id: newId,
-        name: `Block-${newId}`,
-        size
+        id: blockIdCounter.value,
+        name: `Block-${blockIdCounter.value}`,
+        size,
+        chartType: selectedChartType.value
       });
+      blockIdCounter.value++; // 블럭 추가 시 카운터 증가
       nextTick(() => {
-        const totalColumns = 4; // 한 줄에 4개 열
-        const newRowIndex = Math.floor((blocks.value.length - 1) / totalColumns); // 새로운 블럭이 위치한 줄의 인덱스
-        const firstBlockIndex = newRowIndex * totalColumns; // 해당 줄의 첫 블럭 인덱스
-        const firstBlock = document.getElementById(`Block-${blocks.value[firstBlockIndex].id}`);
-
-        if (firstBlock) {
-          firstBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
         leftColumnBlocks = getLeftColumnBlocks(); // 추가 후 leftColumnBlocks 정리
       });
     };
@@ -204,7 +243,7 @@ export default {
     const onDragEnd = () => {
 
       // 배열에서 해당 블럭을 새로운 위치로 이동
-  // leftColumnBlocks를 업데이트 (blocks 배열 기준으로 다시 설정)
+      // leftColumnBlocks를 업데이트 (blocks 배열 기준으로 다시 설정)
       nextTick(() => {
         leftColumnBlocks = getLeftColumnBlocks(); // 블럭 순서를 다시 가져옴
       });
@@ -214,6 +253,8 @@ export default {
       blocks,
       leftColumnBlocks,
       focusBlock,
+      selectedChartType,
+      getChartOptions,
       onDragEnd,
       getBlockClass,
       addBlock,

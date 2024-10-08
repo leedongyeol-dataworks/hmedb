@@ -712,27 +712,26 @@
 // sort layout
 .sort-layout-wrap {
   height: 100%;
-  .funcButton {position: fixed; top: 5rem;}
+  .funcButton {position: fixed; top: 3rem;}
   .container {
-    .blockStyle {display: flex; justify-content: space-between; padding: 1rem;
-      span {
-        display: flex;
-        align-items: center;
-      }
+    .blockStyle {
+      display: flex; justify-content: center; padding: 1rem; flex-wrap: wrap;
+      .block_info {width: 100%; display: flex; justify-content: space-between; font-size: 12px;}
+      .highchart-container {height: calc(100% - 1.5rem); width: calc(100% - 1.5rem);}
     }
-    .focused {
-      border: 2px solid red;
-      background-color: #ffd4d4;
+    .focused {position: relative;
+      &::after {border-top: 4px solid blue; border-left: 4px solid blue;
+        width: 5rem; height: 5rem;
+      position: absolute; top: 0; left: 0; content: ''; display: block;z-index: 5;
+      }
     }
     background: #ffdcdc;
     height: 100%;
     overflow-y: scroll;
     &::-webkit-scrollbar {width: 0;}
-    &::-webkit-scrollbar-thumb {
-      background-color: rgb(163, 163, 163);
-    }
+    &::-webkit-scrollbar-thumb {background-color: rgb(163, 163, 163);}
     &::-webkit-scrollbar-button {display: none;}
-    &::-webkit-scrollbar-track
+    &::-webkit-scrollbar-track,
     &::-webkit-scrollbar-thumb {border-radius: .5rem;}
     .grid-item {
       position: relative;

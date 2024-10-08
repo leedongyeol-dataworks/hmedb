@@ -1,52 +1,26 @@
 <template>
-  <div ref="chartContainer" class="chart-panel"></div>
+  <div ref="chartContainer" class="highchart-container"></div>
 </template>
 
 <script>
-import { onMounted, ref, watch } from 'vue';
 import Highcharts from 'highcharts';
 
 export default {
-  props: {
-    chartOptions: {
-      type: Object,
-      required: true,
-    },
+  props: ['chartOptions'], // Accept chart options as a prop
+  mounted() {
+    this.renderChart();
   },
-  setup(props) {
-    const chart = ref(null); // Highcharts 인스턴스
-
-    onMounted(() => {
-      renderChart(); // DOM이 마운트된 후에 차트를 렌더링합니다.
-    });
-
-    watch(
-      () => props.chartOptions,
-      (newOptions) => {
-        if (chart.value) {
-          chart.value.update(newOptions); // 차트 옵션이 변경되면 차트를 업데이트합니다.
-        }
-      }
-    );
-
-    const renderChart = () => {
-      chart.value = Highcharts.chart(
-        // chartContainer는 DOM이 마운트된 후 접근 가능합니다.
-        document.querySelector('.chart-panel'),
-        props.chartOptions
-      );
-    };
-
-    return {
-      renderChart,
-    };
-  },
+  methods: {
+    renderChart() {
+      Highcharts.chart(this.$refs.chartContainer, this.chartOptions);
+    }
+  }
 };
 </script>
 
-<style>
-.chart-panel {
+<style scoped>
+.highchart-container {
   width: 100%;
-  height: 300px;
+  height: 100%;
 }
 </style>
