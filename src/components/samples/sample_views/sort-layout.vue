@@ -20,17 +20,13 @@
     <!-- 4x6 Container -->
     <div class="container" ref="scrollContainer">
       <draggable v-model="blocks" group="blocks" @end="onDragEnd" item-key="id">
-        <template #item="{ element, index }">
+        <template #item="{ element }">
           <div :id="`block-${element.id}`" 
             class="blockStyle"
             :class="[
               getBlockClass(element.size),
               { focused: element.id === focusBlock }
             ]">
-            <div class="block_info">
-              <span>{{ element.name }}</span>
-              <button @click="removeBlock(index)">Delete</button>
-            </div>
             <chartPanel :chartOptions="getChartOptions(element.chartType)" />
           </div>
         </template>
@@ -132,15 +128,12 @@ export default {
       { id: 25, name: 'Block-25', size: '1x1', resource : '', chartType : 'line'},
       { id: 26, name: 'Block-26', size: '4x2', resource : '', chartType : 'line'},
       { id: 27, name: 'Block-27', size: '4x2', resource : '', chartType : 'line'},
-      { id: 28, name: 'Block-28', size: '4x2', resource : '', chartType : 'line'},
-      { id: 29, name: 'Block-29', size: '4x2', resource : '', chartType : 'line'},
       { id: 30, name: 'Block-30', size: '1x1', resource : '', chartType : 'line'},
       { id: 31, name: 'Block-31', size: '1x1', resource : '', chartType : 'line'},
       { id: 32, name: 'Block-32', size: '1x1', resource : '', chartType : 'line'},
       { id: 33, name: 'Block-33', size: '1x1', resource : '', chartType : 'line'},
       { id: 34, name: 'Block-34', size: '2x1', resource : '', chartType : 'line'},
       { id: 35, name: 'Block-35', size: '2x1', resource : '', chartType : 'line'},
-      { id: 36, name: 'Block-36', size: '4x2', resource : '', chartType : 'line'},
       { id: 37, name: 'Block-37', size: '4x2', resource : '', chartType : 'line'},
     ]);
 

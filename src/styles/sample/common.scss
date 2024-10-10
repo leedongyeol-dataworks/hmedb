@@ -714,10 +714,11 @@
   height: 100%;
   .funcButton {position: fixed; top: 3rem;}
   .container {
+    &>div {}
     .blockStyle {
-      display: flex; justify-content: center; padding: 1rem; flex-wrap: wrap;
+      display: flex; justify-content: center; flex-wrap: wrap;
       .block_info {width: 100%; display: flex; justify-content: space-between; font-size: 12px;}
-      .highchart-container {height: calc(100% - 1.5rem); width: calc(100% - 1.5rem);}
+      // .highchart-container {height: calc(100% - 1.5rem); width: calc(100% - 1.5rem);}
     }
     .focused {position: relative;
       &::after {border-top: 4px solid blue; border-left: 4px solid blue;
@@ -725,7 +726,7 @@
       position: absolute; top: 0; left: 0; content: ''; display: block;z-index: 5;
       }
     }
-    background: #ffdcdc;
+    background: #101010;
     height: 100%;
     overflow-y: scroll;
     &::-webkit-scrollbar {width: 0;}
@@ -762,19 +763,19 @@
     }
   }
   .block-1x1 {
-    background: #b6b6b6;
+    background: #101010;
     grid-column: span 1;
     grid-row: span 1;
   }
   
   .block-2x1 {
-    background: #b6b6b6;
+    background: #101010;
     grid-column: span 2;
     grid-row: span 1;
   }
   
   .block-4x2 {
-    background: #b6b6b6;
+    background: #101010;
     grid-column: span 4;
     grid-row: span 2;
   }
