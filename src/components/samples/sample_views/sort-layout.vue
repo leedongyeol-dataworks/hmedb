@@ -15,16 +15,18 @@
         <button @click="scrollToFirstBlock">[first]</button>
         <button @click="scrollToPreviousBlock">[▲]</button>
         <button @click="scrollToNextBlock">[▼]</button>
+        <button @click="sizeChange4x5">Size 4x5</button>
+        <button @click="sizeChange5x6">Size 5x6</button>
       </div>
     </div>
     <!-- 4x6 Container -->
     <div class="container" ref="scrollContainer">
-      <draggable v-model="blocks" group="blocks" @end="onDragEnd" item-key="id">
+      <draggable v-model="blocks" :class="draggableClass" group="blocks" @end="onDragEnd" item-key="id">
         <template #item="{ element }">
           <div :id="`block-${element.id}`" 
             class="blockStyle"
+            :style="getBlockStyle(element.size)"
             :class="[
-              getBlockClass(element.size),
               { focused: element.id === focusBlock }
             ]">
             <chartPanel :chartOptions="getChartOptions(element.chartType)" />
@@ -48,6 +50,8 @@ export default {
   setup() {
     // 선택한 차트 타입 (기본값 'line')
     const selectedChartType = ref('line');
+    const draggableClass = ref('size-4x5'); // 기본 클래스
+    const totalColumns = ref(4); // 기본값 4열
     // 공통 chartOptions (데이터와 구조를 공유)
     const commonChartOptions = {
       title: {
@@ -68,7 +72,6 @@ export default {
         }
       ]
     };
-
     // 차트 타입에 따라 chartOptions를 반환하는 함수
     const getChartOptions = (chartType) => {
       return {
@@ -103,7 +106,7 @@ export default {
     // 드래그 가능한 블럭들 (크기는 1x1 또는 4x2)
     const blocks = ref([
       { id: 1, name: 'Block-1', size: '1x1', resource : '', chartType : 'line'},
-      { id: 2, name: 'Block-2', size: '1x1', resource : '', chartType : 'line'},
+      { id: 2, name: 'Block-2', size: '3x3', resource : '', chartType : 'line'},
       { id: 3, name: 'Block-3', size: '1x1', resource : '', chartType : 'line'},
       { id: 7, name: 'Block-7', size: '1x1', resource : '', chartType : 'line'},
       { id: 8, name: 'Block-8', size: '1x1', resource : '', chartType : 'line'},
@@ -139,32 +142,55 @@ export default {
 
     // 배열중 가장 마지막 id 찾음
     let blockIdCounter = ref(Math.max(...blocks.value.map(block => block.id)) + 1);
+    // 블록 크기에 따라 동적 스타일을 반환
+    const getBlockStyle = (size) => {
+      const [colSpan, rowSpan] = size.split('x').map(Number);
+      return {
+        'grid-column': `span ${colSpan}`,
+        'grid-row': `span ${rowSpan}`
+      };
+    };
+
+    const sizeChange4x5 = () => {
+      totalColumns.value = 4; // 4열로 설정
+      draggableClass.value = 'size-4x5';
+    };
+
+    const sizeChange5x6 = () => {
+      totalColumns.value = 5; // 5열로 설정
+      draggableClass.value = 'size-5x6';
+    };
+
+    const parseBlockSize = (size) => {
+      const [cols, rows] = size.split('x').map(Number); // '3x2' -> [3, 2]
+      return { cols, rows };
+    };
 
     // 첫 번째 열의 블럭들만 가져오는 함수
     const getLeftColumnBlocks = () => {
+      if (!containerElement) {
+        console.error('containerElement is null');
+        return [];
+      }
+
       let currentColumn = 0; // 현재 열의 위치를 추적
       const leftColumnBlocks = [];
 
-      // containerElement 안의 블럭들을 순회하며 첫 번째 열에 위치한 블럭들을 필터링
-      [...containerElement.querySelectorAll('[id^="block-"]')].forEach((block) => {
-        const blockSize = block.classList.contains('block-4x2') ? '4x2' :
-                          block.classList.contains('block-2x1') ? '2x1' : '1x1';
+      // 블록들을 순회하면서 첫 번째 열에 있는 블록만 필터링
+      blocks.value.forEach((block) => {
+        const { cols } = parseBlockSize(block.size); // 블록의 크기 (열 수)
 
-        // 첫 번째 열에 있는 블럭만 배열에 추가
-        if (currentColumn % 4 === 0) {
+        // 첫 번째 열에 있는 블록만 배열에 추가
+        if (currentColumn % totalColumns.value === 0) {
           leftColumnBlocks.push(block);
         }
 
-        // 각 블럭의 크기에 따라 열을 건너뛰기
-        switch (blockSize) {
-          case '4x2':
-            currentColumn += 4; // 4칸을 차지하므로 4칸 이동
-            break;
-          case '2x1':
-            currentColumn += 2; // 2칸을 차지하므로 2칸 이동
-            break;
-          default:
-            currentColumn += 1; // 1칸을 차지하므로 1칸 이동
+        // 각 블록의 크기에 따라 열을 이동
+        currentColumn += cols;
+
+        // 현재 열이 전체 열 수를 초과하면 첫 번째 열로 초기화
+        if (currentColumn >= totalColumns.value) {
+          currentColumn = 0;
         }
       });
 
@@ -199,37 +225,62 @@ export default {
     };
     // 다음 블럭으로 스크롤하는 함수
     const scrollToNextBlock = () => {
-      currentIndex++;
-      if (currentIndex >= leftColumnBlocks.length) {
-        currentIndex = 0; // 마지막 블럭 이후에는 다시 첫 블럭으로 돌아감
+      if (blocks.value.length === 0) return;
+
+      // 현재 블럭의 크기를 기반으로 이동
+      const currentBlock = blocks.value[currentIndex];
+      const sizeClass = currentBlock.size;
+
+      // 'sizeClass'가 있는지 확인 후 파싱
+      if (sizeClass) {
+        const { cols } = parseBlockSize(sizeClass);
+
+        // 다음 블럭으로 이동 (현재 블럭의 컬럼 수만큼 이동)
+        currentIndex += cols;
+
+        // 인덱스가 배열 길이를 넘어갈 경우 처음으로 돌아감
+        if (currentIndex >= blocks.value.length) {
+          currentIndex = 0;
+        }
+
+        const nextBlock = blocks.value[currentIndex];
+        focusBlock.value = nextBlock.id;
+
+        const nextBlockElement = document.getElementById(`block-${nextBlock.id}`);
+        if (nextBlockElement) {
+          nextBlockElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
       }
-      const blockId = leftColumnBlocks[currentIndex].id
-      focusBlock.value = +blockId.replace('block-', '');
-      
-      leftColumnBlocks[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     const scrollToPreviousBlock = () => {
-      currentIndex--;
-      if (currentIndex < 0) {
-        currentIndex = leftColumnBlocks.length - 1; // 첫 블럭 이전에는 마지막 블럭으로 이동
-      }
-      const blockId = leftColumnBlocks[currentIndex].id
-      focusBlock.value = +blockId.replace('block-', '');
+      if (blocks.value.length === 0) return;
 
-      leftColumnBlocks[currentIndex].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // 현재 블럭의 크기를 기반으로 이동
+      const currentBlock = blocks.value[currentIndex];
+      const sizeClass = currentBlock.size;
+
+      // 'sizeClass'가 있는지 확인 후 파싱
+      if (sizeClass) {
+        const { cols } = parseBlockSize(sizeClass);
+
+        // 이전 블럭으로 이동 (현재 블럭의 컬럼 수만큼 이동)
+        currentIndex -= cols;
+
+        // 인덱스가 0보다 작아질 경우 마지막으로 돌아감
+        if (currentIndex < 0) {
+          currentIndex = blocks.value.length - 1;
+        }
+
+        const prevBlock = blocks.value[currentIndex];
+        focusBlock.value = prevBlock.id;
+
+        const prevBlockElement = document.getElementById(`block-${prevBlock.id}`);
+        if (prevBlockElement) {
+          prevBlockElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
     };
     // 블럭 스타일을 크기에 따라 설정
-
-    const getBlockClass = (size) => {
-      switch (size) {
-        case '1x1':
-          return 'block-1x1';
-        case '2x1':
-          return 'block-2x1';
-        case '4x2':
-          return 'block-4x2';
-      }
-    };
 
     // 드래그가 끝났을 때 호출
     // 드래그가 끝났을 때 호출되는 함수
@@ -247,9 +298,14 @@ export default {
       leftColumnBlocks,
       focusBlock,
       selectedChartType,
+      draggableClass,
+      parseBlockSize,
+      sizeChange4x5,
+      sizeChange5x6,
+      totalColumns,
       getChartOptions,
+      getBlockStyle,
       onDragEnd,
-      getBlockClass,
       addBlock,
       scrollToFirstBlock,
       scrollToNextBlock,
