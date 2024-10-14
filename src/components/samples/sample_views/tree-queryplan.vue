@@ -191,7 +191,7 @@
 </template>
 <script>
 // 밑에 from 에러부분 살펴보기
-import TreeNode from '@/components/views/TreeNode.vue'; // root로 경로 설정해도 이럼 화면은 잘나옴..
+import TreeNode from '@/components/samples/views/TreeNode.vue'; // root로 경로 설정해도 이럼 화면은 잘나옴..
 
 export default {
   components: {

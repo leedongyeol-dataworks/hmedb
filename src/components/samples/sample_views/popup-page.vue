@@ -23,8 +23,8 @@ import { useStore } from 'vuex';
 import { computed, 
   // ref 컴포넌트 방식
  } from 'vue';
-import popupPage1 from '@/components/views/popup/popup-page1.vue';
-import popupPage2 from '@/components/views/popup/popup-page2.vue';
+import popupPage1 from '@/components/samples/views/popup/popup-page1.vue';
+import popupPage2 from '@/components/samples/views/popup/popup-page2.vue';
 // const currentPopupComponent = ref(popupPage1);
   
 const store = useStore();

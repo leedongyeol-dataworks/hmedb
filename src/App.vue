@@ -1,6 +1,7 @@
 <template>
   <div class="choice">
     <router-link :to="'/samplesHome'">samplesHome</router-link>
+    <router-link :to="'/integration'">Home</router-link>
   </div>
   <router-view />
   <popup-window> <!-- 팝업 창 -->
@@ -10,7 +11,7 @@
 <script setup>
 import { useStore } from 'vuex';
 import { computed } from 'vue';
-import popupWindow from './components/views/popup-window.vue';
+import popupWindow from './components/samples/views/popup-window.vue';
 
 const store = useStore();
 const popupFrom = computed(() => store.getters.popupFrom); // 동적으로 렌더링할 컴포넌트
@@ -28,5 +29,7 @@ export default {
 @import "@/styles/sample/common.scss";
 @import "@/styles/reset.css";
 
-.choice {position: fixed;}
+.choice {position: fixed; display: flex; width: 150px; justify-content: space-between;
+  top: 2remw; right: 50%;
+}
 </style>

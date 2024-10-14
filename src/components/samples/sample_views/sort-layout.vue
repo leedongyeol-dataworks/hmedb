@@ -7,16 +7,14 @@
         <option value="bar">Bar Chart</option>
       </select>
       {{ selectedChartType }} ;
-      <button @click="addBlock('1x1')">Add 1x1 Block</button>,
-      <button @click="addBlock('2x1')">Add 2x1 Block</button>,
-      <button @click="addBlock('4x2')">Add 4x2 Block</button>
+      <button @click="addBlock('25x20')">Add 25x20 Block</button>,
+      <button @click="addBlock('50x20')">Add 50x20 Block</button>,
+      <button @click="addBlock('100x40')">Add 100x40 Block</button>
       <!-- 추가된 업 & 다운 버튼 -->
       <div>
         <button @click="scrollToFirstBlock">[first]</button>
         <button @click="scrollToPreviousBlock">[▲]</button>
         <button @click="scrollToNextBlock">[▼]</button>
-        <button @click="sizeChange4x5">Size 4x5</button>
-        <button @click="sizeChange5x6">Size 5x6</button>
       </div>
     </div>
     <!-- 4x6 Container -->
@@ -46,7 +44,7 @@
 <script>
 import { ref, onMounted, nextTick } from "vue";
 import draggable from "vuedraggable";
-import chartPanel from "@/components/chart/chartPanel.vue";
+import chartPanel from "@/components/samples/chart/chartPanel.vue";
 
 export default {
   components: {
@@ -109,188 +107,201 @@ export default {
       }
     });
 
-    // 드래그 가능한 블럭들 (크기는 1x1 또는 4x2)
+    // 드래그 가능한 블럭들 (크기는 25x20 또는 100x40)
     const blocks = ref([
-      { id: 1, name: "Block-1", size: "1x1", resource: "", chartType: "line" },
-      { id: 2, name: "Block-2", size: "4x3", resource: "", chartType: "line" },
-      { id: 3, name: "Block-3", size: "1x1", resource: "", chartType: "line" },
-      { id: 7, name: "Block-7", size: "1x1", resource: "", chartType: "line" },
-      { id: 8, name: "Block-8", size: "1x1", resource: "", chartType: "line" },
-      { id: 9, name: "Block-9", size: "1x1", resource: "", chartType: "line" },
-      { id: 4, name: "Block-4", size: "1x1", resource: "", chartType: "line" },
-      { id: 6, name: "Block-6", size: "1x1", resource: "", chartType: "line" },
-      {
-        id: 10,
-        name: "Block-10",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 11,
-        name: "Block-11",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 12,
-        name: "Block-12",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 13,
-        name: "Block-13",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 14,
-        name: "Block-14",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 15,
-        name: "Block-15",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 16,
-        name: "Block-16",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 17,
-        name: "Block-17",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 18,
-        name: "Block-18",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 19,
-        name: "Block-19",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 20,
-        name: "Block-20",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
-      {
-        id: 21,
-        name: "Block-21",
-        size: "1x1",
-        resource: "",
-        chartType: "line",
-      },
+      { id: 1, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 2, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 3, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 4, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 5, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 6, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 7, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 8, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 9, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 10, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 11, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 12, name: "Block-1", size: "25x20", resource: "", chartType: "line" },
+      { id: 13, name: "Block-2", size: "100x30", resource: "", chartType: "line" },
+      { id: 14, name: "Block-3", size: "25x20", resource: "", chartType: "line" },
+      { id: 15, name: "Block-3", size: "25x20", resource: "", chartType: "line" },
+      { id: 16, name: "Block-3", size: "25x20", resource: "", chartType: "line" },
+      { id: 17, name: "Block-7", size: "25x20", resource: "", chartType: "line" },
+      { id: 18, name: "Block-8", size: "100x20", resource: "", chartType: "line" },
+      { id: 19, name: "Block-9", size: "25x20", resource: "", chartType: "line" },
+      { id: 20, name: "Block-4", size: "25x20", resource: "", chartType: "line" },
+      { id: 21, name: "Block-6", size: "25x20", resource: "", chartType: "line" },
       {
         id: 22,
-        name: "Block-22",
-        size: "1x1",
+        name: "Block-10",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 23,
-        name: "Block-23",
-        size: "1x1",
+        name: "Block-11",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 24,
-        name: "Block-24",
-        size: "1x1",
+        name: "Block-12",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 25,
-        name: "Block-25",
-        size: "1x1",
+        name: "Block-13",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 26,
-        name: "Block-26",
-        size: "4x2",
+        name: "Block-14",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 27,
-        name: "Block-27",
-        size: "4x2",
+        name: "Block-15",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 28,
+        name: "Block-16",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 29,
+        name: "Block-17",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 30,
-        name: "Block-30",
-        size: "1x1",
+        name: "Block-18",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 31,
-        name: "Block-31",
-        size: "1x1",
+        name: "Block-19",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 32,
-        name: "Block-32",
-        size: "1x1",
+        name: "Block-20",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 33,
-        name: "Block-33",
-        size: "1x1",
+        name: "Block-21",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 34,
-        name: "Block-34",
-        size: "2x1",
+        name: "Block-22",
+        size: "25x20",
+        resource: "",
+        chartType: "bar",
+      },
+      {
+        id: 35,
+        name: "Block-23",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
-        id: 35,
-        name: "Block-35",
-        size: "2x1",
+        id: 36,
+        name: "Block-24",
+        size: "25x20",
         resource: "",
         chartType: "line",
       },
       {
         id: 37,
+        name: "Block-25",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 38,
+        name: "Block-26",
+        size: "100x40",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 39,
+        name: "Block-27",
+        size: "100x40",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 40,
+        name: "Block-30",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 41,
+        name: "Block-31",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 42,
+        name: "Block-32",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 43,
+        name: "Block-33",
+        size: "25x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 44,
+        name: "Block-34",
+        size: "50x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 45,
+        name: "Block-35",
+        size: "50x20",
+        resource: "",
+        chartType: "line",
+      },
+      {
+        id: 46,
         name: "Block-37",
-        size: "4x2",
+        size: "100x40",
         resource: "",
         chartType: "line",
       },
@@ -309,16 +320,6 @@ export default {
       };
     };
 
-    const sizeChange4x5 = () => {
-      totalColumns.value = 4; // 4열로 설정
-      draggableClass.value = "size-4x5";
-    };
-
-    const sizeChange5x6 = () => {
-      totalColumns.value = 5; // 5열로 설정
-      draggableClass.value = "size-5x6";
-    };
-
     const parseBlockSize = (size) => {
       const [cols, rows] = size.split("x").map(Number); // '3x2' -> [3, 2]
       return { cols, rows };
@@ -326,14 +327,9 @@ export default {
 
     // 첫 번째 열의 블럭들만 가져오는 함수
     const getLeftColumnBlocks = () => {
-      const totalColumns = 4; // 그리드의 총 열 수
+      const totalColumns = 100; // 그리드의 총 열 수
       const grid = []; // 그리드를 2차원 배열로 초기화
       const leftColumnBlocks = []; // 왼쪽 열에 위치한 블록들을 저장할 배열
-
-      // 그리드를 초기화 (예: 최대 20행)
-      for (let i = 0; i < 20; i++) {
-        grid[i] = Array(totalColumns).fill(null);
-      }
 
       let currentRow = 0; // 현재 행
       let currentCol = 0; // 현재 열
@@ -341,9 +337,14 @@ export default {
       blocks.value.forEach((block) => {
         const { cols, rows } = parseBlockSize(block.size); // 블록의 열 및 행 크기 계산
 
-        // 그리드 내에서 블록을 배치할 수 있는 위치 찾기
-        while (currentRow < grid.length) {
+        // 블록을 배치할 수 있는 행을 찾기
+        while (totalColumns) {
           let canPlace = false; // 배치 가능 여부를 판단하는 변수
+
+          // 현재 행에 필요한 공간이 부족하면 그리드에 행을 추가
+          while (grid.length <= currentRow + rows) {
+            grid.push(Array(totalColumns).fill(null));
+          }
 
           while (currentCol < totalColumns) {
             canPlace = true; // 기본적으로 배치 가능하다고 가정
@@ -352,9 +353,9 @@ export default {
             for (let r = 0; r < rows; r++) {
               for (let c = 0; c < cols; c++) {
                 if (
-                  currentRow + r >= grid.length ||
-                  currentCol + c >= totalColumns ||
-                  grid[currentRow + r][currentCol + c] !== null
+                  currentRow + r >= grid.length || // 그리드의 높이를 넘어서면 그리드를 확장
+                  currentCol + c >= totalColumns || // 그리드 너비 초과
+                  grid[currentRow + r][currentCol + c] !== null // 이미 블록이 차있으면 배치 불가
                 ) {
                   canPlace = false;
                   break;
@@ -378,28 +379,29 @@ export default {
 
               // 다음 블록을 위해 현재 열 위치 업데이트
               currentCol += cols;
-              break; // 블록 배치 완료 후 내부 while 루프 탈출
+              break;
             } else {
               // 현재 열에서 배치할 수 없으면 다음 열로 이동
               currentCol += 1;
             }
           }
 
-          // 블록을 배치하지 못했으면 행을 증가시키고 다시 시작
+          // 블록을 배치하지 못했으면 행을 증가시키고 다시 시도
           if (!canPlace) {
             currentRow += 1;
             currentCol = 0;
           } else {
-            // 블록이 배치되었으면 while 루프 탈출 (다음 블록으로 이동)
             break;
           }
         }
       });
 
       console.log(leftColumnBlocks);
-
       return leftColumnBlocks;
     };
+
+
+
 
     // 블럭 추가 함수
     const addBlock = (size) => {
@@ -483,8 +485,6 @@ export default {
       selectedChartType,
       draggableClass,
       parseBlockSize,
-      sizeChange4x5,
-      sizeChange5x6,
       totalColumns,
       getChartOptions,
       getBlockStyle,

@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import ChartPanel from '@/components/chart/chartPanel.vue';
-import SelectModal from '@/components/views/selectModal.vue';
+import ChartPanel from '@/components/samples/chart/chartPanel.vue';
+import SelectModal from '@/components/samples/views/selectModal.vue';
 
 export default {
   components: { ChartPanel, SelectModal },

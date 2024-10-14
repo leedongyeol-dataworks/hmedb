@@ -1,5 +1,5 @@
 <template>
-    <div class="warp" :class="{ active: sideState }">
+    <div class="sample_warp" :class="{ active: sideState }">
       <Sidebar
         class="sidebar"
         :sideState="sideState"

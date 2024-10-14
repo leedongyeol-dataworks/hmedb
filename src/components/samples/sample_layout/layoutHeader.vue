@@ -23,26 +23,6 @@
         <li>blue : {{ globalColor.blue }}</li>
       </ul>
     </div>
-    <!-- <div
-      class="alert_nav state"
-      :class="{ active: alertState, warning: warning }"
-    >
-      <ul class="troble_state_board" @click="alert_toggle">
-        <li><span></span>state : BW / BDW</li>
-        <li><span></span>state : BW / PFD</li>
-        <li><span></span>state : BW / PDF</li>
-      </ul>
-      <ul class="trouble_list">
-        <li :class="{ check: isChecked }">
-          <span @click="changeGroupSid(changedTitle, changedChildName)">
-            {{ changedTitle }}
-            /
-            {{ changedChildName }}</span
-          >
-          <i class="xi-check" @click="trouble_toggle"></i>
-        </li>
-      </ul>
-    </div> -->
     <div
       class="alert_nav"
       :class="{ active: alertState, warning: warning }"
