@@ -6,6 +6,7 @@ import storeMain from "./store/main";
 import HighchartsVue from "highcharts-vue";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
+import 'remixicon/fonts/remixicon.css'
 
 createApp(App)
   .use(storeSample)

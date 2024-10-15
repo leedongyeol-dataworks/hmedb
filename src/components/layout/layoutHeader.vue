@@ -32,6 +32,22 @@
                         <span class="resource_condition warning"></span>
                         <span class="resource_name">[MDM] X 230dws</span>
                     </li>
+                    <li>
+                        <span class="resource_condition warning"></span>
+                        <span class="resource_name">[MDM] X 230dws</span>
+                    </li>
+                    <li>
+                        <span class="resource_condition warning"></span>
+                        <span class="resource_name">[MDM] X 230dws</span>
+                    </li>
+                    <li>
+                        <span class="resource_condition warning"></span>
+                        <span class="resource_name">[MDM] X 230dws</span>
+                    </li>
+                    <li>
+                        <span class="resource_condition warning"></span>
+                        <span class="resource_name">[MDM] X 230dws</span>
+                    </li>
                 </ul>
             </div>
             <div class="agent">

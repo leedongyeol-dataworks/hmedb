@@ -2,7 +2,6 @@
     <div class="warp" :class="{ active: sideState }">
       <layoutSidebar
         class="sidebar"
-        :sideState="sideState"
         @sideToggle="sideToggle"
       ></layoutSidebar>
       <div class="layout">
@@ -21,7 +20,7 @@ import layoutHeader from '../layout/layoutHeader.vue';
 export default {
   data() {
     return {
-      sideState: false,
+      sideState: true,
     }
   },
   methods: {
